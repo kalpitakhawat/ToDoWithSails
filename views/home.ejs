@@ -1,0 +1,73 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+            <div class="card">
+                <h3 class="card-header primary-color white-text">Add Task</h3>
+                <div class="card-body px-5">
+                    <form action="/task/create" method="post">
+                        <div class="row">
+                                <div class="col-12 col-md-8">
+                                    <div class="md-form">
+                                        <textarea type="text" id="textareaPrefix" class="form-control md-textarea" rows="3" name="task" required></textarea>
+                                        <label for="textareaPrefix">Task Detail</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <% tasks.forEach(function(task){%>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text" id='task<%= task.id%>'> <%= task.task %> </p>
+                    
+                    <a class="btn btn-sm btn-primary" onclick="popoverCall(this , '<%= task.id%>','<%= task.task %>')" data-toggle="popover" data-placement="top" data-content="There are no changes to save.">Edit</a>
+                    <form action="/task/delete" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="<%= task.id %>">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                                <form action="/task/statusToggle" method="post">
+                                    <input type="hidden" name="id" value="<%= task.id %>">
+                                    <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="status" value="true" id="defaultCheckbox<%= task.id %>" <%if (task.isCompleted) { %>
+                                                checked
+                                                <% } %> onChange="this.form.submit()">
+                                            <label class="form-check-label" for="defaultCheckbox<%= task.id %>">
+                                                Completed
+                                            </label>
+                                        </div>
+                                        
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%})%>
+    </div>
+    
+</div>
+<script>
+    function popoverCall(e ,id,task) {
+        if($('.popover').hasClass('in')){
+            $(e).popover('hide');
+        }
+        else
+        {
+            $(e).attr('data-content','<form action="/task/update" method="post" id="form'+id+'"> <input type="hidden" name="id" value="'+id+'"> <div class="md-form"> <textarea name="task" class="form-control md-textarea">'+task+'</textarea> </div><button type="submit" class="btn btn-sm btn-success">Submit</button></form>');
+            $(e).popover('show');
+        }
+        
+    }
+</script>

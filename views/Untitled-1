@@ -1,0 +1,1 @@
+<form action="/task/update" method="post" id="form<%=task.id%>"> <input type="hidden" name="id" value="<%=task.id>"> <div class="md-form"> <textarea name="task" class="form-control md-textarea"><%=task.task%></textarea> </div><button type="submit" class="btn btn-sm btn-success">Submit</button></form>
